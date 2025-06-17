@@ -17,12 +17,12 @@ const LoginPage = () => {
         <h1 className='font-bold uppercase tracking-wide'>InsideBox</h1>
       </div>
 
-      <div className='flex justify-around items-center h-[80%] my-auto w-full '>
+      <div className='flex justify-around items-center h-[85%] my-auto w-full '>
         {/* content */}
         <form action="" onSubmit={handleSubmit} className='flex flex-col w-[500px] p-10 mx-auto lg:flex-1'>
           <div className='mb-12'>
             <h2 className='lg:text-sm text-xs text-gray-500 mb-5'>Start your journey</h2>
-            <h1 className='font-bold lg:text-3xl text-lg'>Sign Up to InsideBox</h1>
+            <h1 className='font-bold lg:text-3xl text-lg'>Login to InsideBox</h1>
 
           </div>
           <div className='space-y-8'>
@@ -51,7 +51,7 @@ const LoginPage = () => {
             {/* this button has an animation */}
             <button className='w-full relative px-4 py-2 rounded shadow-sm overflow-hidden group border border-blue-400'>
               <span className='absolute top-0 left-0 w-0 h-0 group-hover:w-full group-hover:h-full group-hover:bg-blue-400 transform -translate-x-[100%] group-hover:translate-x-0 duration-500'></span>
-              <span className='relative z-10 w-full  group-hover:text-white  text-sm text-blue-400'>Login</span>
+              <span className='relative z-10 w-full  group-hover:text-white  text-sm text-blue-400 font-bold'>Login</span>
             </button>
             <div className='mt-4 text-xs'>
               <span className='text-gray-600'>Don't have an account ?</span>
@@ -60,11 +60,10 @@ const LoginPage = () => {
 
           </div>
         </form>
-
-        <div className=' bg-gray-50 shadow-xl border-l border-black flex-2 rounded-2xl overflow-hidden lg:block hidden '>
+        <div className=' bg-gray-50 shadow-xl  flex-2 rounded-2xl overflow-hidden lg:block hidden '>
 
           {/* img source */}
-          <img src={image1} alt="" className=' object-cover w-full h-screen rounded-2xl ' />
+          <img src={image1} alt="" className=' object-contain w-full h-screen rounded-2xl ' />
         </div>
       </div>
 
