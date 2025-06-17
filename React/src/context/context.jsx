@@ -3,6 +3,11 @@ import { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext({
   toggleTheme: () => { },
+  token: null,
+  user: null,
+  theme: 'light',
+  setUser: () => { },
+  setToken: () => { },
 
 });
 
@@ -28,7 +33,7 @@ export default function GlobalState({ children }) {
     localStorage.setItem("theme", theme);
   }, [theme]);
   return (
-    <GlobalContext.Provider value={{ theme, toggleTheme, user, token, loading, setLoading, setUser }}>
+    <GlobalContext.Provider value={{ theme, toggleTheme, user, token, loading, setLoading, setUser, setToken }}>
       {children}
     </GlobalContext.Provider>
   );
