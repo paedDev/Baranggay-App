@@ -1,13 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { VscVscodeInsiders } from "react-icons/vsc";
 import { GlobalContext } from '../context/context';
 import image1 from "../assets/images/anime.jpg";
 import { Link } from "react-router-dom";
 const RegistrationPage = () => {
-  const { user, token, loading, setLoading } = useContext(GlobalContext);
-  const handleSubmit = () => {
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  // const emailRef = useRef();
+  const [email, setEmail] = useState('');
+  const passwordRef = useRef();
+  const passwordConfirmationRef = useRef();
+  const { user, token, loading, setLoading, errors, setErrors } = useContext(GlobalContext);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        first_name: firstNameRef.current.value,
+        last_name: lastNameRef.current.value,
+        email,
+      };
+      console.log(payload);
 
+      // console.log({
+      //   firstNameRef, lastNameRef, email Ref, passwordConfirmationRef, passwordRef
+      // });
+
+    } catch (error) {
+
+    }
   };
+
   return (
     <div className='h-screen p-5 w-8xl w-full '>
       <div className='flex items-center space-x-2'>
@@ -27,6 +49,7 @@ const RegistrationPage = () => {
             <div className='flex space-x-5 items-center justify-between'>
               <div className='relative group '>
                 <input
+                  ref={firstNameRef}
                   type="text"
                   name='firstname'
                   id='firstname'
@@ -37,6 +60,7 @@ const RegistrationPage = () => {
               </div>
               <div className='relative group '>
                 <input
+                  ref={lastNameRef}
                   type="text"
                   name='lastname'
                   id='lastname'
@@ -49,6 +73,8 @@ const RegistrationPage = () => {
 
             <div className='relative group '>
               <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 name='email'
                 id='email'
@@ -59,6 +85,7 @@ const RegistrationPage = () => {
             </div>
             <div className='relative group'>
               <input
+                ref={passwordRef}
                 type="password"
                 name='password'
                 id='password'
@@ -67,6 +94,7 @@ const RegistrationPage = () => {
             </div>
             <div className='relative group'>
               <input
+                ref={passwordConfirmationRef}
                 type="password"
                 name='password_confirmation'
                 id='password_confirmation'
