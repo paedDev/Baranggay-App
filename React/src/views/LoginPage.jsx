@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { VscVscodeInsiders } from "react-icons/vsc";
 import { GlobalContext } from '../context/context';
-import image1 from "../assets/images/anime.jpg";
+import baranggay from "../assets/images/baranggay.jpg";
+import skLogo from "../assets/images/sk_logo.jpg";
 import { Link } from "react-router-dom";
 
 
@@ -13,8 +14,8 @@ const LoginPage = () => {
   return (
     <div className='h-screen p-5 w-8xl w-full '>
       <div className='flex items-center space-x-2'>
-        <VscVscodeInsiders size={40} className='text-blue-600' />
-        <h1 className='font-bold uppercase tracking-wide'>InsideBox</h1>
+        <img src={skLogo} alt="sk_logo" className='w-15 h-15' />
+        <h1 className='font-bold uppercase tracking-wide'>SK Baranggay </h1>
       </div>
 
       <div className='flex justify-around items-center h-[85%] my-auto w-full '>
@@ -63,7 +64,7 @@ const LoginPage = () => {
         <div className=' bg-gray-50 shadow-xl  flex-2 rounded-2xl overflow-hidden lg:block hidden '>
 
           {/* img source */}
-          <img src={image1} alt="" className=' object-contain w-full h-screen rounded-2xl ' />
+          <img src={baranggay} alt="" className=' object-contain w-full h-screen rounded-2xl ' />
         </div>
       </div>
 

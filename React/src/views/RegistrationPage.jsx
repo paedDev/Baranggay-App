@@ -1,15 +1,25 @@
 import React, { useContext, useRef, useState } from 'react';
 import { VscVscodeInsiders } from "react-icons/vsc";
 import { GlobalContext } from '../context/context';
-import image1 from "../assets/images/anime.jpg";
+import baranggay from "../assets/images/baranggay.jpg";
 import { Link } from "react-router-dom";
+import skLogo from "../assets/images/sk_logo.jpg";
 const RegistrationPage = () => {
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   // const emailRef = useRef();
   const [email, setEmail] = useState('');
+  const [number, setNumber] = useState('');
+  const middleNameRef = useRef();
+  const [birthDate, setBirthDate] = useState('');
+  const [gender, setGender] = useState('');
+  const [civilStatus, setCivilStatus] = useState();;
+
+
+
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
+
   const { user, token, loading, setLoading, errors, setErrors } = useContext(GlobalContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +27,12 @@ const RegistrationPage = () => {
       const payload = {
         first_name: firstNameRef.current.value,
         last_name: lastNameRef.current.value,
+        middle_name: middleNameRef.current.value,
         email,
+        number,
+        birthDate,
+        gender,
+        civilStatus
       };
       console.log(payload);
 
@@ -33,20 +48,20 @@ const RegistrationPage = () => {
   return (
     <div className='h-screen p-5 w-8xl w-full '>
       <div className='flex items-center space-x-2'>
-        <VscVscodeInsiders size={40} className='text-blue-600' />
-        <h1 className='font-bold uppercase tracking-wide'>InsideBox</h1>
+        <img src={skLogo} alt="sk_logo" className='w-15 h-15' />
+        <h1 className='font-bold uppercase tracking-wide'>SK Baranggay </h1>
       </div>
 
       <div className='flex justify-around items-center h-[85%] my-auto w-full '>
         {/* content */}
         <form action="" onSubmit={handleSubmit} className='flex flex-col w-[500px] p-10 mx-auto lg:flex-1'>
           <div className='my-12 '>
-            <h2 className='lg:text-sm text-xs text-gray-500 mb-5'>Start your journey</h2>
-            <h1 className='font-bold lg:text-3xl text-lg'>Sign Up to InsideBox</h1>
+            <h2 className='lg:text-sm text-xs text-gray-500 mb-5'>Welcome, Kabaranggay</h2>
+            <h1 className='font-bold lg:text-3xl text-lg'>Registration Type</h1>
 
           </div>
           <div className='space-y-8'>
-            <div className='flex space-x-5 items-center justify-between'>
+            <div className='grid lg:grid-cols-3 lg:gap-2 gap-8  grid-cols-1  '>
               <div className='relative group '>
                 <input
                   ref={firstNameRef}
@@ -60,6 +75,17 @@ const RegistrationPage = () => {
               </div>
               <div className='relative group '>
                 <input
+                  ref={middleNameRef}
+                  type="text"
+                  name='middlename'
+                  id='middlename'
+                  placeholder='Sablaon'
+                  className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs' />
+                <label htmlFor="middlename"
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Middle Name</label>
+              </div>
+              <div className='relative group '>
+                <input
                   ref={lastNameRef}
                   type="text"
                   name='lastname'
@@ -70,19 +96,138 @@ const RegistrationPage = () => {
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Last Name</label>
               </div>
             </div>
+            <div className='grid lg:grid-cols-2 grid-cols-1 gap-8 lg:gap-2'>
+              <div className='relative group '>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  name='email'
+                  id='email'
+                  placeholder='example@gmail.com'
+                  className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs' />
+                <label htmlFor="email"
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Email</label>
+              </div>
 
-            <div className='relative group '>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                name='email'
-                id='email'
-                placeholder='example@gmail.com'
-                className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs' />
-              <label htmlFor="email"
-                className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Email</label>
+              <div className='relative group '>
+                <input
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                  type="number"
+                  name='contact_number'
+                  id='contact_number'
+                  placeholder='09123456789'
+                  className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs' />
+                <label htmlFor="contact_number"
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Contact Number</label>
+              </div>
             </div>
+            <div className='grid lg:grid-cols-3 grid-cols-1 lg:gap-2 gap-8'>
+              <div className='relative group '>
+                <input
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  type="date"
+                  name='birth_date'
+                  id='birth_date'
+                  placeholder='09123456789'
+                  className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs' />
+                <label htmlFor="birth_date"
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Birth Date</label>
+              </div>
+              <div className='relative group '>
+                <select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  name='gender'
+                  id='gender'
+                  placeholder='09123456789'
+                  className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs'
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select >
+                <label htmlFor="gender"
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '>Gender</label>
+              </div>
+              <div className='relative group '>
+                <select
+                  value={civilStatus}
+                  onChange={(e) => setCivilStatus(e.target.value)}
+                  name='civil_status'
+                  id='civil_status'
+                  placeholder='09123456789'
+                  className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs' >
+                  <option value="">Civil Status</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+                </select>
+                <label htmlFor="civil_status"
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Civil Status</label>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div className='relative group'>
               <input
                 ref={passwordRef}
@@ -120,11 +265,11 @@ const RegistrationPage = () => {
         <div className=' bg-gray-50 shadow-xl  flex-2 rounded-2xl overflow-hidden lg:block hidden '>
 
           {/* img source */}
-          <img src={image1} alt="" className=' object-contain w-full h-screen rounded-2xl ' />
+          <img src={baranggay} alt="" className=' object-contain w-full h-screen rounded-2xl ' />
         </div>
-      </div>
+      </div >
 
-    </div>
+    </div >
   );
 };
 
