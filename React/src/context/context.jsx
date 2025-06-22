@@ -34,7 +34,7 @@ export default function GlobalState({ children }) {
     localStorage.setItem("theme", theme);
   }, [theme]);
   return (
-    <GlobalContext.Provider value={{ theme, toggleTheme, user, token, loading, setLoading, setUser, setToken }}>
+    <GlobalContext.Provider value={{ theme, toggleTheme, user, token, loading, setLoading, setUser, setToken, setErrors, errors }}>
       {children}
     </GlobalContext.Provider>
   );

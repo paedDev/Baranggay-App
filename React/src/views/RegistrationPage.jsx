@@ -39,7 +39,8 @@ const RegistrationPage = () => {
         house_address: houseAddressRef.current.value,
         occupation: occupationRef.current.value,
         password: passwordRef.current.value,
-        password_confirmation: passwordConfirmationRef.current.value
+        password_confirmation: passwordConfirmationRef.current.value,
+        registration_type: registrationType
       };
       console.log(payload);
 
@@ -61,13 +62,25 @@ const RegistrationPage = () => {
         <h1 className='font-bold uppercase tracking-wide'>SK Baranggay </h1>
       </div>
 
-      <div className='flex justify-around items-center h-[85%] my-auto w-full '>
+      <div className='flex justify-around items-center h-[85%]  w-full '>
         {/* content */}
-        <form action="" onSubmit={handleSubmit} className='flex flex-col w-[500px] p-10 mx-auto lg:flex-1'>
-          <div className='my-12 '>
-            <h2 className='lg:text-sm text-xs text-gray-500 mb-5'>Welcome, Kabaranggay</h2>
-            <h1 className='font-bold lg:text-3xl text-lg'>Registration Type</h1>
-
+        <form action="" onSubmit={handleSubmit} className='flex flex-col w-[500px] p-10  mx-auto lg:flex-1'>
+          <div className='my-10 '>
+            <h2 className='lg:text-sm text-xs text-gray-500 '>Welcome, Kabaranggay</h2>
+            <h1 className='font-bold mb-2'>Registration Type</h1>
+            <div className='flex space-x-4 '>
+              <div className='space-x-1 flex items-center'>
+                <input type="radio" name="resident" id="resident" value='resident' checked={registrationType === "resident"} onChange={(e) => setRegistrationType(e.target.value)} />
+                <label htmlFor="resident">Resident</label>
+              </div>
+              <div className='space-x-1 flex items-center'>
+                <input type="radio" name="baranggay_staffs"
+                  value="staff" checked={registrationType ===
+                    'staff'
+                  } id="baranggay_staffs" onChange={(e) => setRegistrationType(e.target.value)} />
+                <label htmlFor="baranggay_staffs">Baranggay Staffs</label>
+              </div>
+            </div>
           </div>
           <div className='space-y-8'>
             <div className='grid lg:grid-cols-3 lg:gap-2 gap-8  grid-cols-1  '>
@@ -211,17 +224,21 @@ const RegistrationPage = () => {
             </div>
 
             <div>
-              <div className='relative group '>
-                <input
-                  ref={occupationRef}
-                  type="text"
-                  name='occupation'
-                  id='occupation'
-                  placeholder='e.g., Teacher, Farmer, Programmer'
-                  className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 rounded w-full  focus:outline-none placeholder:text-xs focus:ring-blue-800 text-xs ' />
-                <label htmlFor="occupation"
-                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Occupation (for Residents Only)</label>
-              </div>
+              {
+                registrationType === 'resident' &&
+                (<div className='relative group '>
+                  <input
+                    ref={occupationRef}
+                    type="text"
+                    name='occupation'
+                    id='occupation'
+                    placeholder='e.g., Teacher, Farmer, Programmer'
+                    className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 rounded w-full  focus:outline-none placeholder:text-xs focus:ring-blue-800 text-xs ' />
+                  <label htmlFor="occupation"
+                    className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Occupation (for Residents Only)</label>
+                </div>)
+              }
+
             </div>
             <div className='grid  lg:grid-cols-2 grid-cols-1 lg:gap-2 gap-8'>
               <div className='relative group'>
