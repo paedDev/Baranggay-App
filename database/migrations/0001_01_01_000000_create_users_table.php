@@ -21,10 +21,13 @@ return new class extends Migration
             $table->string("birth_date")->nullable();
             $table->string("gender")->nullable();
             $table->string("civil_status", ['single', 'widowed', 'married'])->nullable();
-            $table->string("purok");
-            $table->string("house_address");
-            $table->string('occupation');
-            $table->string('registration_type');
+            $table->string("purok")->nullable();
+            $table->string("house_address")->nullable();
+            $table->string('occupation')->nullable();
+            $table->string('registration_type', [
+                'resident',
+                'staff'
+            ])->default('resident');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
