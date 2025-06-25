@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('contact_number')->nullable();
             $table->string("birth_date")->nullable();
             $table->string("gender")->nullable();
-            $table->string("civil_status", ['single', 'widowed', 'married'])->nullable();
+            $table->enum('civil_status', ['Single', 'Married', 'Widowed', 'Divorced'])->nullable();
             $table->string("purok")->nullable();
             $table->string("house_address")->nullable();
             $table->string('occupation')->nullable();

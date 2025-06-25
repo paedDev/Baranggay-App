@@ -7,7 +7,7 @@ Route::get('/', function () {
   return view('welcome');
 });
 
-Route::post("/register", [AuthController::class, 'login']);
-Route::post("/login", [AuthController::class, 'register']);
+Route::post("/login", [AuthController::class, 'login']);
+Route::post("/signup", [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function () {});

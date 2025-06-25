@@ -30,8 +30,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'contact_number' => fake()->numerify('09#########'), // Philippine mobile format
             'birth_date' => fake()->dateTimeBetween('-80 years', '-18 years')->format('Y-m-d'),
-            'gender' => fake()->randomElement(['male', 'female']),
-            'civil_status' => fake()->randomElement(['single', 'married', 'widowed']),
+            'gender' => fake()->randomElement(['Male', 'Female']),
+            'civil_status' => fake()->randomElement(['Single', 'Married', 'Widowed', 'Divorced']),
             'purok' => fake()->randomElement([
                 'Purok 1',
                 'Purok 2',

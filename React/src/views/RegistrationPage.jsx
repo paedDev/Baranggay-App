@@ -2,9 +2,11 @@ import React, { useContext, useRef, useState } from 'react';
 import { VscVscodeInsiders } from "react-icons/vsc";
 import { GlobalContext } from '../context/context';
 import baranggay from "../assets/images/baranggay.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import skLogo from "../assets/images/sk_logo.jpg";
+import axiosClient from '../../../../React-Laravel-Fullstack-App/react/src/axios-client';
 const RegistrationPage = () => {
+  const navigate = useNavigate();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   // const emailRef = useRef();
@@ -20,49 +22,55 @@ const RegistrationPage = () => {
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
   const [registrationType, setRegistrationType] = useState('resident');
-  const { user, token, loading, setLoading, errors, setErrors } = useContext(GlobalContext);
+  const { user, token, loading, setLoading, error, setErrors } = useContext(GlobalContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
+    const payload = {
+      first_name: firstNameRef.current.value,
+      last_name: lastNameRef.current.value,
+      middle_name: middleNameRef.current?.value || '',
+      email,
+      contact_number: number,
+      birth_date: birthDate,
+      gender,
+      civil_status: civilStatus,
+      purok,
+      house_address: houseAddressRef.current.value,
+      occupation: occupationRef.current.value,
+      password: passwordRef.current.value,
+      password_confirmation: passwordConfirmationRef.current.value,
+      registration_type: registrationType
+    };
+    console.log(payload);
+
     try {
-      const payload = {
-        first_name: firstNameRef.current.value,
-        last_name: lastNameRef.current.value,
-        middle_name: middleNameRef.current?.value || '',
-        email,
-        contact_number: number,
-        birth_date: birthDate,
-        gender,
-        civil_status: civilStatus,
-        purok,
-        house_address: houseAddressRef.current.value,
-        occupation: occupationRef.current.value,
-        password: passwordRef.current.value,
-        password_confirmation: passwordConfirmationRef.current.value,
-        registration_type: registrationType
-      };
-      console.log(payload);
+      const res = await axiosClient.post('/signup', payload);
+      console.log('Success response', res.data);
 
-      // console.log({
-      //   firstNameRef, lastNameRef, email Ref, passwordConfirmationRef, passwordRef
-      // });
-
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
     } catch (error) {
-
+      if (error.response && error.response.data) {
+        setErrors(error.response.data.errors);
+      }
+    } finally {
+      setLoading(false);
     }
   };
   const purokOptions = [
     'Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5', 'Purok 6', 'Purok 7', 'Purok 8', 'Purok 9', 'Purok 10',
   ];
   return (
-    <div className='h-screen p-5 w-8xl w-full '>
+    <div className='h-screen p-5 w-8xl w-full  '>
       <div className='flex items-center space-x-2'>
         <img src={skLogo} alt="sk_logo" className='w-15 h-15' />
         <h1 className='font-bold uppercase tracking-wide'>SK Baranggay </h1>
       </div>
 
-      <div className='flex justify-around items-center h-[85%]  w-full '>
+      <div className='flex flex-col lg:flex-row justify-around items-center h-[85%]  w-full '>
         {/* content */}
         <form action="" onSubmit={handleSubmit} className='flex flex-col w-[500px] p-10  mx-auto lg:flex-1'>
           <div className='my-10 '>
@@ -136,7 +144,7 @@ const RegistrationPage = () => {
                 <input
                   value={number}
                   onChange={(e) => setNumber(e.target.value)}
-                  type="number"
+                  type="tel"
                   name='contact_number'
                   id='contact_number'
                   placeholder='09123456789'
@@ -186,6 +194,7 @@ const RegistrationPage = () => {
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
                   <option value="Widowed">Widowed</option>
+                  <option value="Divorced">Divorced</option>
                 </select>
                 <label htmlFor="civil_status"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Civil Status</label>
@@ -202,7 +211,7 @@ const RegistrationPage = () => {
                   placeholder='House No., Street Name'
                   className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 rounded w-full  focus:outline-none placeholder:text-xs focus:ring-blue-800 text-xs ' />
                 <label htmlFor="house_address"
-                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> First Name</label>
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> House Address</label>
               </div>
               <div className='relative group '>
                 <select
@@ -219,7 +228,7 @@ const RegistrationPage = () => {
                   }
                 </select>
                 <label htmlFor="purok"
-                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400  '> Civil Status</label>
+                  className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400  '> Purok</label>
               </div>
             </div>
 
