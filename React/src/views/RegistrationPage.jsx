@@ -22,7 +22,7 @@ const RegistrationPage = () => {
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
   const [registrationType, setRegistrationType] = useState('resident');
-  const { user, token, loading, setLoading, error, setErrors } = useContext(GlobalContext);
+  const { user, token, loading, setLoading, errors, setErrors } = useContext(GlobalContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,7 +38,7 @@ const RegistrationPage = () => {
       civil_status: civilStatus,
       purok,
       house_address: houseAddressRef.current.value,
-      occupation: occupationRef.current.value,
+      occupation: registrationType === 'resident' ? occupationRef.current?.value || '' : '',
       password: passwordRef.current.value,
       password_confirmation: passwordConfirmationRef.current.value,
       registration_type: registrationType
@@ -53,7 +53,8 @@ const RegistrationPage = () => {
         navigate('/login');
       }, 3000);
     } catch (error) {
-      if (error.response && error.response.data) {
+      console.log('Error response data:', error.response?.data);
+      if (error.response && error.response.data && error.response.data.errors) {
         setErrors(error.response.data.errors);
       }
     } finally {
@@ -63,6 +64,10 @@ const RegistrationPage = () => {
   const purokOptions = [
     'Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5', 'Purok 6', 'Purok 7', 'Purok 8', 'Purok 9', 'Purok 10',
   ];
+  const getError = (field) => {
+    if (!errors || !errors[field]) return null;
+    return Array.isArray(errors[field]) ? errors[field][0] : errors[field];
+  };
   return (
     <div className='h-screen p-5 w-8xl w-full  '>
       <div className='flex items-center space-x-2'>
@@ -78,11 +83,11 @@ const RegistrationPage = () => {
             <h1 className='font-bold mb-2'>Registration Type</h1>
             <div className='flex space-x-4 '>
               <div className='space-x-1 flex items-center'>
-                <input type="radio" name="resident" id="resident" value='resident' checked={registrationType === "resident"} onChange={(e) => setRegistrationType(e.target.value)} />
+                <input type="radio" name="registration_type" id="resident" value='resident' checked={registrationType === "resident"} onChange={(e) => setRegistrationType(e.target.value)} />
                 <label htmlFor="resident">Resident</label>
               </div>
               <div className='space-x-1 flex items-center'>
-                <input type="radio" name="baranggay_staffs"
+                <input type="radio" name="registration_type"
                   value="staff" checked={registrationType ===
                     'staff'
                   } id="baranggay_staffs" onChange={(e) => setRegistrationType(e.target.value)} />
@@ -96,34 +101,48 @@ const RegistrationPage = () => {
                 <input
                   ref={firstNameRef}
                   type="text"
-                  name='firstname'
-                  id='firstname'
+                  name='first_name'
+                  id='first_name'
                   placeholder='John'
                   className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 rounded w-full  focus:outline-none placeholder:text-xs focus:ring-blue-800 text-xs' />
-                <label htmlFor="firstname"
+                <label htmlFor="first_name"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> First Name</label>
+
+                {
+                  getError('first_name') && (
+                    <p className='text-red-500 text-xs ml-1 mt-1'>{getError('first_name')}</p>
+                  )
+                }
               </div>
               <div className='relative group '>
                 <input
                   ref={middleNameRef}
                   type="text"
-                  name='middlename'
-                  id='middlename'
+                  name='middle_name'
+                  id='middle_name'
                   placeholder='Sablaon'
                   className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs text-xs' />
-                <label htmlFor="middlename"
+                <label htmlFor="middle_name"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Middle Name</label>
+                {getError('middle_name') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('middle_name')}</p>
+                )}
               </div>
               <div className='relative group '>
                 <input
                   ref={lastNameRef}
                   type="text"
-                  name='lastname'
-                  id='lastname'
+                  name='last_name'
+                  id='last_name'
                   placeholder='Paed'
                   className='border text-xs border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs' />
-                <label htmlFor="email"
+                <label htmlFor="last_name"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Last Name</label>
+                {
+                  getError('last_name') && (
+                    <p className='text-red-500 text-xs ml-1 mt-1'>{getError('last_name')}</p>
+                  )
+                }
               </div>
             </div>
             <div className='grid lg:grid-cols-2 grid-cols-1 gap-8 lg:gap-2'>
@@ -138,6 +157,11 @@ const RegistrationPage = () => {
                   className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs text-xs' />
                 <label htmlFor="email"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Email</label>
+                {
+                  getError('email') && (
+                    <p className='text-red-500 text-xs ml-1 mt-1'>{getError('email')}</p>
+                  )
+                }
               </div>
 
               <div className='relative group '>
@@ -151,6 +175,11 @@ const RegistrationPage = () => {
                   className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs text-xs' />
                 <label htmlFor="contact_number"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Contact Number</label>
+                {
+                  getError('contact_number') && (
+                    <p className='text-red-500 text-xs ml-1 mt-1'>{getError('contact_number')}</p>
+                  )
+                }
               </div>
             </div>
             <div className='grid lg:grid-cols-3 grid-cols-1 lg:gap-2 gap-8'>
@@ -165,6 +194,9 @@ const RegistrationPage = () => {
                   className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs text-xs' />
                 <label htmlFor="birth_date"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Birth Date</label>
+                {getError('birth_date') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('birth_date')}</p>
+                )}
               </div>
               <div className='relative group '>
                 <select
@@ -172,7 +204,6 @@ const RegistrationPage = () => {
                   onChange={(e) => setGender(e.target.value)}
                   name='gender'
                   id='gender'
-                  placeholder='09123456789'
                   className='border text-xs border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-800 rounded w-full focus:outline-none placeholder:text-xs'
                 >
                   <option value="">Select Gender</option>
@@ -181,6 +212,10 @@ const RegistrationPage = () => {
                 </select >
                 <label htmlFor="gender"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '>Gender</label>
+                {getError('gender') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('gender')}</p>
+                )}
+
               </div>
               <div className='relative group '>
                 <select
@@ -198,6 +233,9 @@ const RegistrationPage = () => {
                 </select>
                 <label htmlFor="civil_status"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Civil Status</label>
+                {getError('civil_status') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('civil_status')}</p>
+                )}
               </div>
             </div>
 
@@ -212,6 +250,9 @@ const RegistrationPage = () => {
                   className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 rounded w-full  focus:outline-none placeholder:text-xs focus:ring-blue-800 text-xs ' />
                 <label htmlFor="house_address"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> House Address</label>
+                {getError('house_address') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('house_address')}</p>
+                )}
               </div>
               <div className='relative group '>
                 <select
@@ -229,6 +270,9 @@ const RegistrationPage = () => {
                 </select>
                 <label htmlFor="purok"
                   className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400  '> Purok</label>
+                {getError('purok') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('purok')}</p>
+                )}
               </div>
             </div>
 
@@ -245,6 +289,9 @@ const RegistrationPage = () => {
                     className='border border-blue-400 px-4 py-2 focus:border-blue-400 focus:ring-1 rounded w-full  focus:outline-none placeholder:text-xs focus:ring-blue-800 text-xs ' />
                   <label htmlFor="occupation"
                     className='absolute -left-1 -top-5 group-focus-within:left-2 group-focus-within:-top-2 z-10 text-gray-600 bg-gray-50 px-4 text-xs group-focus-within:text-blue-400 transition-all duration-400 '> Occupation (for Residents Only)</label>
+                  {getError('occupation') && (
+                    <p className='text-red-500 text-xs ml-1 mt-1'>{getError('occupation')}</p>
+                  )}
                 </div>)
               }
 
@@ -258,6 +305,9 @@ const RegistrationPage = () => {
                   id='password'
                   placeholder='********' className='px-4 py-2 border-blue-400 w-full border focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 rounded placeholder:text-xs text-xs' />
                 <label htmlFor="password" className='absolute group-focus-within:-top-2 group-focus-within:left-2 bg-gray-50 text-gray-600 px-4 text-xs rounded -top-5 -left-1 transition-all duration-400 group-focus-within:text-blue-400'> Password</label>
+                {getError('password') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('password')}</p>
+                )}
               </div>
               <div className='relative group'>
                 <input
@@ -267,6 +317,9 @@ const RegistrationPage = () => {
                   id='password_confirmation'
                   placeholder='********' className='px-4 py-2 border-blue-400 w-full border focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 rounded placeholder:text-xs text-xs' />
                 <label htmlFor="password" className='absolute group-focus-within:-top-2 group-focus-within:left-2 bg-gray-50 text-gray-600 px-4 text-xs rounded -top-5 -left-1 transition-all duration-400 group-focus-within:text-blue-400'> Password Confirmation</label>
+                {getError('password_confirmation') && (
+                  <p className='text-red-500 text-xs ml-1 mt-1'>{getError('password_confirmation')}</p>
+                )}
               </div>
             </div>
 

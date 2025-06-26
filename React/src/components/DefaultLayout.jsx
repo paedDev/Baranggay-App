@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { MdOutlineSpaceDashboard } from "react-icons/md";
@@ -6,12 +6,43 @@ import { HiUsers } from "react-icons/hi2";
 import { LuLogOut } from "react-icons/lu";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import { GlobalContext } from '../context/context';
+import axiosClient from '../../axiosClient';
 const DefaultLayout = () => {
-  const navigate = useNavigate(0);
-  const { theme, toggleTheme, token } = useContext(GlobalContext);
+  const navigate = useNavigate();
+  const { theme, toggleTheme, setToken, token, setUser, user, setLoading } = useContext(GlobalContext);
   if (!token) {
     return <Navigate to="/login" />;
   }
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axiosClient.post('/logout');
+      setUser({});
+      setToken(null);
+    } catch (error) {
+      console.log("Error Logout", error);
+    }
+  };
+  const handleGetUserName = async () => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axiosClient.get('user');
+      setUser(res.data);
+      console.log(user);
+
+    } catch (error) {
+      console.log('Error Fetching data', error);
+    } finally {
+      setLoading(false);
+    }
+
+  };
+  useEffect(() => {
+    if (token) {
+      return handleGetUserName();
+    }
+  }, [token]);
   return (
     <div className='h-screen w-8xl mx-auto bg-black/5 px-5 py-10 flex'>
 
@@ -40,12 +71,12 @@ const DefaultLayout = () => {
           </div>
 
           <div className='flex space-x-4 items-center'>
-            <h2>UserName</h2>
+            <h2>{user?.first_name}</h2>
             {
               theme === 'light' ?
                 <MdOutlineDarkMode size={20} onClick={toggleTheme} /> : <MdDarkMode size={20} onClick={toggleTheme} />
             }
-            <LuLogOut size={20} />
+            <LuLogOut size={20} onClick={handleLogout} />
           </div>
         </header>
         <main className='p-5'>

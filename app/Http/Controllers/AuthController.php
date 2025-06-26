@@ -33,9 +33,10 @@ class AuthController extends Controller
         $token = $user->createToken('main')->plainTextToken;
 
         return response()->json([
+            'message' => 'Registration successful',
             'user' => $user,
             'token' => $token,
-        ]);
+        ], 201);
     }
     public function login(LoginRequest $request)
     {
@@ -46,7 +47,7 @@ class AuthController extends Controller
             return response([
                 'message' => 'Provided credentials are incorrect',
 
-            ]);
+            ], 401);
         };
         /** @var User $user */
         $user = Auth::user();
@@ -63,7 +64,7 @@ class AuthController extends Controller
         $user = $request->user();
         $user->currentAccessToken()->delete;
         return response()->json([
-            'message' => 'Logout successfully'
+            'message' => 'Logout successful'
         ]);
     }
 }
