@@ -13,11 +13,12 @@ export const GlobalContext = createContext({
 
 export default function GlobalState({ children }) {
   const [loading, setLoading] = useState(false);
-  const [theme, setTheme] = useState(() => localStorage.getItem('light') || 'theme');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   // const [token, _setToken] = useState();
   const [token, _setToken] = useState(() => localStorage.getItem('ACCESS_TOKEN') || null);
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState('');
 
   const toggleTheme = () => {
     setTheme(t => (t === 'light' ? 'dark' : 'light'));
@@ -35,7 +36,7 @@ export default function GlobalState({ children }) {
     localStorage.setItem("theme", theme);
   }, [theme]);
   return (
-    <GlobalContext.Provider value={{ theme, toggleTheme, user, token, loading, setLoading, setUser, setToken, setErrors, errors }}>
+    <GlobalContext.Provider value={{ theme, toggleTheme, user, token, loading, setLoading, setUser, setToken, setErrors, errors, setMessage, message }}>
       {children}
     </GlobalContext.Provider>
   );

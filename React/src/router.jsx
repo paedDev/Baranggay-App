@@ -7,6 +7,8 @@ import Login from "./views/LoginPage";
 import Signup from "./views/RegistrationPage";
 import NotFound from "./views/NotFound";
 import { createBrowserRouter } from "react-router-dom";
+import DocumentRequestForm from "./views/Documents/DocumentRequestForm";
+import MyDocumentRequests from "./views/Documents/MyDocumentRequests";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -19,7 +21,15 @@ const router = createBrowserRouter([
       {
         path: '/dashboard',
         element: <Dashboard />
-      }
+      },
+      {
+        path: '/documents',
+        element: <DocumentRequestForm />
+      },
+      {
+        path: '/my-requests',
+        element: <MyDocumentRequests />
+      },
 
     ]
   },

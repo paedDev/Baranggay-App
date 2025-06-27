@@ -34,7 +34,6 @@ class SignUpRequest extends FormRequest
             'purok' => ['required', 'string'],
             'house_address' => ['required', 'string'],
             'occupation' => ['required_if:registration_type,resident', 'string'],
-
             'password' => ['required', 'confirmed', Password::min(8)],
             'registration_type' => ['required', 'string', 'in:resident,staff']
 
