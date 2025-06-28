@@ -65,19 +65,20 @@ const DocumentRequestForm = () => {
 
 
   const documentTypes = {
-    'baranggay_clearance': 'Baranggay Clearance (₱50)',
+    'barangay_clearance': 'Barangay Clearance (₱50)',
     'certificate_of_residency': 'Certificate of Residency (₱30)',
     'certificate_of_indigency': 'Certificate of Indigency (₱20)',
     'business_permit': 'Business Permit (₱100)',
     'building_permit': 'Building Permit (₱200)',
-    'baranggay_id': 'Baranggay ID (₱80)'
+    'barangay_id': 'Barangay ID (₱80)'
   };
   return (
     <div className='max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-xl overflow-auto h-[550px]'>
-      <h1 className='font-bold text-2xl mb-12'>Request Document</h1>
+
+      <h1 className={`${message.includes("Error") ? 'font-bold text-2xl mb-4' : 'font-bold text-2xl mb-12'} `}>Request Document</h1>
       {
         message && (
-          <div className={`p-4 rounded mb-4 ${message.includes('Error') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>{message}</div>
+          <div className={`p-4 rounded mb-10 ${message.includes('Error') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>{message}</div>
         )
       }
       <form action="" className='space-y-8' onSubmit={handleSubmit}>

@@ -29,7 +29,12 @@ class DocumentRequestController extends Controller
         $request->validate([
             'document_type' => ['required', 'string'],
             'purpose' => ['required', 'string', 'max:255'],
-            'personal_info' => ['required', 'array']
+            'personal_info' => ['required', 'array'],
+            'personal_info.full_name' => 'required|string',
+            'personal_info.address' => 'required|string',
+            'personal_info.birth_date' => 'required|date',
+            'personal_info.civil_status' => 'required|string',
+            'personal_info.occupation' => 'required|string',
         ]);
         $documentRequest = DocumentRequest::create([
             'user_id' => Auth::id(),
