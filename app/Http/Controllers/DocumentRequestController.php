@@ -41,7 +41,8 @@ class DocumentRequestController extends Controller
             'document_type' => $request->document_type,
             'purpose' => $request->purpose,
             'personal_info' => $request->personal_info,
-            'fee' => $this->calculateFee($request->document_type)
+            'fee' => $this->calculateFee($request->document_type),
+            'status' => 'pending'
         ]);
         return response()->json([
             'message' => 'Document request submitted successful',

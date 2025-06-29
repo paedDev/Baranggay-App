@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { GlobalContext } from '../../context/context';
 import axiosClient from '../../../axiosClient';
+import { useNavigate } from 'react-router-dom';
 
 const DocumentRequestForm = () => {
   const { loading, setLoading, message, setMessage } = useContext(GlobalContext);
@@ -16,6 +17,7 @@ const DocumentRequestForm = () => {
       occupation: ''
     }
   });
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,8 +38,13 @@ const DocumentRequestForm = () => {
         }
       });
       console.log(response);
+      navigate('/my-requests');
     } catch (error) {
       setMessage('Error submitting request. Please try again ');
+      setTimeout(() => {
+        setMessage('');
+      }, 5000);
+
       console.log('Error:', error);
     } finally {
       setLoading(false);
